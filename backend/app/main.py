@@ -21,6 +21,9 @@ app.add_middleware(
 )
 
 app.include_router(analyze_router)
+@app.get("/")
+def read_root() -> dict:
+    return {"message": "Welcome to the RepoLens API!"}
 
 
 @app.get("/health")
