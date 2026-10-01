@@ -28,7 +28,7 @@ function App() {
         try {
           const errData = await response.json();
           if (errData.detail) errMessage = errData.detail;
-        } catch (e) {}
+        } catch (e) { }
         throw new Error(errMessage);
       }
 
@@ -46,7 +46,7 @@ function App() {
       <header className="top-bar">
         <div className="top-bar-left">
           <div className="logo-icon"></div>
-          <span className="brand-text">REPOGUARD<br/>ARCADE SECURITY SCANNER v1.0</span>
+          <span className="brand-text">REPOLENS<br />ARCADE SECURITY SCANNER </span>
         </div>
         <div className="nav-buttons">
           <button className="nav-btn active">SCAN</button>
@@ -54,7 +54,7 @@ function App() {
           <button className="nav-btn">SETTINGS</button>
         </div>
         <div className="top-bar-right">
-          <span>CREDITS<br/>999_</span>
+          <span>USERNAME<br />999_</span>
           <div className="avatar"></div>
         </div>
       </header>
@@ -62,17 +62,17 @@ function App() {
       <main className="main-content">
         <div className="title-area">
           <h1 className="main-title">
-            <span className="text-cyan">GIT</span>
-            <span className="text-magenta">ARCADE</span>
+            <span className="text-cyan">REPO</span>
+            <span className="text-magenta">LENS</span>
           </h1>
-          <div className="subtitle blink">INSERT COIN TO SCAN REPOSITORY</div>
+          <div className="subtitle blink">INSERT REPO LINK TO SCAN REPOSITORY</div>
         </div>
 
         <div className="search-container">
-          <input 
-            type="text" 
-            className="search-input" 
-            placeholder="Enter GitHub Repository URL..." 
+          <input
+            type="text"
+            className="search-input"
+            placeholder="Enter GitHub Repository URL..."
             value={repoUrl}
             onChange={(e) => setRepoUrl(e.target.value)}
             onKeyDown={(e) => e.key === 'Enter' && handleAnalyze()}
@@ -97,7 +97,7 @@ function App() {
                   <div className="warning-border"></div>
                 </div>
                 <div className="warning-card">
-                  <div className="warning-text retro-font" style={{marginTop: '34px'}}>SECURITY VULNERABILITIES FOUND</div>
+                  <div className="warning-text retro-font" style={{ marginTop: '34px' }}>SECURITY VULNERABILITIES FOUND</div>
                   <div className="warning-number retro-font">{result.security.length}</div>
                   <div className="warning-border"></div>
                 </div>
@@ -110,7 +110,7 @@ function App() {
                 <div className="log-header">
                   <div className="log-title retro-font">AI SUMMARY</div>
                 </div>
-                <div className="log-text" style={{whiteSpace: 'pre-wrap', fontSize: '1rem', lineHeight: '1.4', color: 'var(--color-gray)'}}>
+                <div className="log-text" style={{ whiteSpace: 'pre-wrap', fontSize: '1rem', lineHeight: '1.4', color: 'var(--color-gray)' }}>
                   {result.ai_summary}
                 </div>
               </div>
@@ -133,7 +133,7 @@ function App() {
                           {issue.file}{issue.line ? `:${issue.line}` : ''} &middot; Category: {issue.category}
                         </div>
                         {issue.suggestion && (
-                          <div className="log-meta" style={{color: 'var(--color-cyan)', marginTop: '4px'}}>
+                          <div className="log-meta" style={{ color: 'var(--color-cyan)', marginTop: '4px' }}>
                             Suggestion: {issue.suggestion}
                           </div>
                         )}
