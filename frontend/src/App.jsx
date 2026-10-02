@@ -179,7 +179,7 @@ function App() {
 
       <footer className="footer retro-font">
         <div>&copy; 2026 REPOGUARD ARCADE</div>
-        <div className="blink">PRESS START TO CONTINUE _</div>
+        <div className="blink">PRESS START TO CONTINUE </div>
       </footer>
     </div>
   );
