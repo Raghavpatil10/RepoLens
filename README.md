@@ -1,4 +1,4 @@
-# RepoLens — Arcade Security Scanner
+# RepoLens 
 
 > **Insert Repo Link to Scan Repository** 👾
 >
