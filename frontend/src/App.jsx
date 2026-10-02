@@ -49,9 +49,6 @@ function App() {
           <span className="brand-text">REPOLENS<br />ARCADE SECURITY SCANNER </span>
         </div>
         <div className="nav-buttons">
-          <button className="nav-btn active">SCAN</button>
-          <button className="nav-btn">REPORTS</button>
-          <button className="nav-btn">SETTINGS</button>
         </div>
         <div className="top-bar-right">
           <span>USERNAME<br />999_</span>
@@ -178,7 +175,7 @@ function App() {
       </main>
 
       <footer className="footer retro-font">
-        <div>&copy; 2026 REPOGUARD ARCADE</div>
+        <div>&copy; 2026 REPOLENS</div>
         <div className="blink">PRESS START TO CONTINUE </div>
       </footer>
     </div>
