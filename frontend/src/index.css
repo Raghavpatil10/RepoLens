@@ -534,3 +534,105 @@ h1, h2, h3, h4, .retro-font {
   border-top: 1px solid #222;
   margin-top: 2rem;
 }
+
+/* Finding Cards */
+.finding-card {
+  background: var(--bg-panel);
+  border: 2px solid var(--border-color);
+  padding: 20px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+.finding-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  border-bottom: 1px dashed var(--border-color);
+  padding-bottom: 12px;
+}
+.finding-title-group {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.finding-category {
+  font-family: 'Press Start 2P', cursive;
+  font-size: 0.5rem;
+  color: var(--color-cyan);
+  text-transform: uppercase;
+}
+.finding-title {
+  color: var(--color-white);
+  font-size: 1.3rem;
+  margin-top: 4px;
+}
+.finding-badge {
+  font-family: 'Press Start 2P', cursive;
+  font-size: 0.6rem;
+  padding: 6px 10px;
+  border: 1px solid currentColor;
+}
+.finding-badge.high, .finding-badge.critical { color: var(--color-magenta); }
+.finding-badge.medium, .finding-badge.warn { color: var(--color-yellow); }
+.finding-badge.low, .finding-badge.info { color: var(--color-green); }
+
+.finding-meta {
+  font-family: 'VT323', monospace;
+  font-size: 1.1rem;
+  color: var(--color-gray);
+  display: flex;
+  gap: 10px;
+}
+.finding-meta-item {
+  background: #111;
+  padding: 2px 8px;
+  border: 1px solid #333;
+}
+.finding-desc {
+  font-size: 1.1rem;
+  color: var(--color-white);
+  line-height: 1.4;
+}
+
+/* Code Snippet */
+.code-snippet-container {
+  background: #000;
+  border: 1px solid #333;
+  border-radius: 2px;
+  overflow-x: auto;
+  padding: 10px 0;
+  margin-top: 10px;
+}
+.code-line {
+  display: flex;
+  font-family: monospace;
+  font-size: 0.95rem;
+  line-height: 1.4;
+}
+.code-line.highlight {
+  background: rgba(255, 0, 60, 0.15);
+  border-left: 3px solid var(--color-magenta);
+}
+.code-line:not(.highlight) {
+  border-left: 3px solid transparent;
+}
+.code-line-number {
+  color: #666;
+  padding: 0 15px;
+  text-align: right;
+  min-width: 50px;
+  user-select: none;
+  border-right: 1px solid #333;
+  margin-right: 15px;
+}
+.code-line.highlight .code-line-number {
+  color: var(--color-magenta);
+}
+.code-line-content {
+  color: #ddd;
+  white-space: pre;
+  padding-right: 15px;
+}

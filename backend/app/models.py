@@ -24,6 +24,19 @@ class ProjectOverview(BaseModel):
     languages: List[LanguageBreakdown]
 
 
+class CodeContextLine(BaseModel):
+    number: int
+    code: str
+    highlight: bool
+
+
+class CodeContext(BaseModel):
+    start_line: int
+    end_line: int
+    highlight_line: int
+    lines: List[CodeContextLine]
+
+
 class CodeIssue(BaseModel):
     severity: str  # HIGH, MEDIUM, LOW
     category: str  # performance, quality, complexity
@@ -31,6 +44,7 @@ class CodeIssue(BaseModel):
     line: Optional[int] = None
     message: str
     suggestion: Optional[str] = None
+    code_context: Optional[CodeContext] = None
 
 
 class SecurityFinding(BaseModel):
@@ -39,6 +53,7 @@ class SecurityFinding(BaseModel):
     line: Optional[int] = None
     issue: str
     test_id: Optional[str] = None
+    code_context: Optional[CodeContext] = None
 
 
 class Dependency(BaseModel):

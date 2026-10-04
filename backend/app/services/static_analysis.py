@@ -54,6 +54,8 @@ def analyze_python_file(path: Path, rel_path: str) -> Tuple[List[Dict], Dict]:
                 "category": "quality",
                 "file": rel_path,
                 "line": fn.lineno,
+                "func_start_line": fn.lineno,
+                "func_end_line": end_line,
                 "message": f"Function '{fn.name}' is {length} lines long.",
                 "suggestion": "Split into smaller functions with single responsibilities.",
             })
@@ -65,6 +67,8 @@ def analyze_python_file(path: Path, rel_path: str) -> Tuple[List[Dict], Dict]:
                 "category": "performance",
                 "file": rel_path,
                 "line": fn.lineno,
+                "func_start_line": fn.lineno,
+                "func_end_line": end_line,
                 "message": f"Function '{fn.name}' has {depth} levels of nested loops.",
                 "suggestion": "Consider a hash-map based lookup to flatten the nesting.",
             })
@@ -91,6 +95,8 @@ def analyze_python_file(path: Path, rel_path: str) -> Tuple[List[Dict], Dict]:
                     "category": "complexity",
                     "file": rel_path,
                     "line": block.lineno,
+                    "func_start_line": block.lineno,
+                    "func_end_line": getattr(block, "endline", None) or block.lineno,
                     "message": f"'{block.name}' has cyclomatic complexity {block.complexity}.",
                     "suggestion": "Break the branching logic into smaller helper functions.",
                 })

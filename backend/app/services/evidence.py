@@ -7,6 +7,7 @@ from .dependency_scan import parse_requirements
 from .discovery import discover_files, language_breakdown
 from .security_scan import run_bandit
 from .static_analysis import analyze_python_file, maintainability_index
+from .code_context import get_code_context
 
 
 def build_evidence(repo_path: Path, project_name: str) -> Dict:
@@ -37,6 +38,34 @@ def build_evidence(repo_path: Path, project_name: str) -> Dict:
 
     security_findings = run_bandit(repo_path)
     dependency_report = parse_requirements(repo_path)
+
+    # Add code context to all static analysis issues
+    for issue in all_issues:
+        if issue.get("line"):
+            context = get_code_context(
+                repo_path,
+                issue["file"],
+                issue["line"],
+                issue.pop("func_start_line", None),
+                issue.pop("func_end_line", None),
+            )
+            issue["code_context"] = context
+        else:
+            issue["code_context"] = None
+            issue.pop("func_start_line", None)
+            issue.pop("func_end_line", None)
+
+    # Add code context to all security findings
+    for finding in security_findings:
+        if finding.get("line"):
+            context = get_code_context(
+                repo_path,
+                finding["file"],
+                finding["line"]
+            )
+            finding["code_context"] = context
+        else:
+            finding["code_context"] = None
 
     overview = {
         "project_name": project_name,

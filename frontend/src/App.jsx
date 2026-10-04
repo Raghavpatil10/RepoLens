@@ -1,6 +1,66 @@
 import React, { useState } from 'react';
-import { TriangleAlert, Bug, ShieldAlert } from 'lucide-react';
+import { TriangleAlert, Bug, ShieldAlert, Code2 } from 'lucide-react';
 import './index.css';
+
+const CodeSnippet = ({ context }) => {
+  if (!context || !context.lines || context.lines.length === 0) {
+    return <div className="finding-meta" style={{ marginTop: '10px', color: 'var(--color-gray)' }}>&gt; Source code unavailable</div>;
+  }
+  
+  return (
+    <div className="code-snippet-container">
+      {context.lines.map((line) => (
+        <div key={line.number} className={`code-line ${line.highlight ? 'highlight' : ''}`}>
+          <div className="code-line-number">{line.number}</div>
+          <div className="code-line-content">{line.code}</div>
+        </div>
+      ))}
+    </div>
+  );
+};
+
+const FindingCard = ({ finding, isSecurity }) => {
+  const category = isSecurity ? 'SECURITY' : finding.category || 'CODE ISSUE';
+  const title = isSecurity ? finding.issue : finding.message;
+  const severity = (finding.severity || 'MEDIUM').toLowerCase();
+  
+  return (
+    <div className="finding-card">
+      <div className="finding-card-header">
+        <div className="finding-title-group">
+          <div className="finding-category">
+            {isSecurity ? <ShieldAlert size={10} style={{marginRight: '4px', verticalAlign: 'middle'}}/> : <Bug size={10} style={{marginRight: '4px', verticalAlign: 'middle'}}/>}
+            {category}
+          </div>
+          <div className="finding-title">{title}</div>
+        </div>
+        <div className={`finding-badge retro-font ${severity}`}>
+          {severity.toUpperCase()}
+        </div>
+      </div>
+      
+      <div className="finding-meta">
+        <div className="finding-meta-item">
+          <Code2 size={12} style={{marginRight: '4px', verticalAlign: 'middle'}}/>
+          {finding.file}
+        </div>
+        {finding.line && (
+          <div className="finding-meta-item">
+            LINE {finding.line}
+          </div>
+        )}
+      </div>
+      
+      {finding.suggestion && (
+        <div className="finding-desc">
+          <span style={{ color: 'var(--color-cyan)' }}>Suggestion:</span> {finding.suggestion}
+        </div>
+      )}
+      
+      <CodeSnippet context={finding.code_context} />
+    </div>
+  );
+};
 
 function App() {
   const [repoUrl, setRepoUrl] = useState('');
@@ -113,62 +173,38 @@ function App() {
               </div>
             )}
 
-            {/* Code Issues */}
-            {result.issues.length > 0 && (
-              <div className="panel">
-                <div className="log-header">
-                  <div className="log-title retro-font" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                    <Bug size={16} /> CODE ISSUES
-                  </div>
-                </div>
-                <div className="log-list">
-                  {result.issues.map((issue, idx) => (
-                    <div key={`issue-${idx}`} className="log-item">
-                      <div className="log-content">
-                        <div className="log-text">{issue.message}</div>
-                        <div className="log-meta">
-                          {issue.file}{issue.line ? `:${issue.line}` : ''} &middot; Category: {issue.category}
-                        </div>
-                        {issue.suggestion && (
-                          <div className="log-meta" style={{ color: 'var(--color-cyan)', marginTop: '4px' }}>
-                            Suggestion: {issue.suggestion}
-                          </div>
-                        )}
-                      </div>
-                      <div className={`log-status retro-font ${issue.severity?.toLowerCase() || 'medium'}`}>
-                        {issue.severity || 'MEDIUM'}
-                      </div>
+            {/* Findings Cards */}
+            <div className="findings-section">
+              {result.issues.length > 0 && (
+                <>
+                  <div className="log-header" style={{ marginTop: '20px' }}>
+                    <div className="log-title retro-font" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                      <Bug size={16} /> CODE ISSUES
                     </div>
-                  ))}
-                </div>
-              </div>
-            )}
-
-            {/* Security Vulnerabilities */}
-            {result.security.length > 0 && (
-              <div className="panel">
-                <div className="log-header">
-                  <div className="log-title retro-font" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                    <ShieldAlert size={16} /> SECURITY VULNERABILITIES
                   </div>
-                </div>
-                <div className="log-list">
-                  {result.security.map((sec, idx) => (
-                    <div key={`sec-${idx}`} className="log-item">
-                      <div className="log-content">
-                        <div className="log-text">{sec.issue}</div>
-                        <div className="log-meta">
-                          {sec.file}{sec.line ? `:${sec.line}` : ''} {sec.test_id ? `(${sec.test_id})` : ''}
-                        </div>
-                      </div>
-                      <div className={`log-status retro-font ${sec.severity?.toLowerCase() || 'high'}`}>
-                        {sec.severity || 'HIGH'}
-                      </div>
+                  <div className="findings-grid">
+                    {result.issues.map((issue, idx) => (
+                      <FindingCard key={`issue-${idx}`} finding={issue} isSecurity={false} />
+                    ))}
+                  </div>
+                </>
+              )}
+              
+              {result.security.length > 0 && (
+                <>
+                  <div className="log-header" style={{ marginTop: '20px' }}>
+                    <div className="log-title retro-font" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                      <ShieldAlert size={16} /> SECURITY VULNERABILITIES
                     </div>
-                  ))}
-                </div>
-              </div>
-            )}
+                  </div>
+                  <div className="findings-grid">
+                    {result.security.map((sec, idx) => (
+                      <FindingCard key={`sec-${idx}`} finding={sec} isSecurity={true} />
+                    ))}
+                  </div>
+                </>
+              )}
+            </div>
 
           </div>
         )}
