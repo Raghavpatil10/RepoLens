@@ -171,3 +171,8 @@ Open `http://localhost:5173` in your browser.
 - [ ] Secret detection via tools like `gitleaks` or `detect-secrets`.
 - [ ] Dependency scanning support for `package.json`, `pnpm-lock.yaml`, and `go.mod`.
 - [ ] Interactive call graph and architecture diagram generation.
+
+---
+
+## Contributing
+Contributions are welcome! Please feel free to submit a Pull Request.
