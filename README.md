@@ -18,6 +18,13 @@ RepoLens combines deterministic static analysis with a retro 8-bit cyber-arcade 
 
 ---
 
+## Tech Stack
+- **Frontend**: React, Vite, CSS
+- **Backend**: Python, FastAPI
+- **Security Tools**: Bandit, pip-audit
+
+---
+
 ## Folder Structure
 
 ```
