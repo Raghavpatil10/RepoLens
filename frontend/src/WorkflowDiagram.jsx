@@ -82,6 +82,7 @@ const nodeTypes = {
 const WorkflowDiagram = ({ diagramData }) => {
   const [nodes, setNodes, onNodesChange] = useNodesState([]);
   const [edges, setEdges, onEdgesChange] = useEdgesState([]);
+  const [layoutDirection, setLayoutDirection] = useState('LR');
 
   useEffect(() => {
     if (diagramData && diagramData.nodes && diagramData.edges) {
@@ -106,16 +107,30 @@ const WorkflowDiagram = ({ diagramData }) => {
 
       const { nodes: layoutedNodes, edges: layoutedEdges } = getLayoutedElements(
         initialNodes,
-        initialEdges
+        initialEdges,
+        layoutDirection
       );
 
       setNodes(layoutedNodes);
       setEdges(layoutedEdges);
     }
-  }, [diagramData, setNodes, setEdges]);
+  }, [diagramData, layoutDirection, setNodes, setEdges]);
+
+  const onLayoutToggle = () => {
+    setLayoutDirection((prev) => (prev === 'TB' ? 'LR' : 'TB'));
+  };
 
   return (
     <div className="diagram-panel">
+      <div style={{ position: 'absolute', top: 10, right: 10, zIndex: 4 }}>
+        <button
+          className="search-btn glitch-hover"
+          style={{ padding: '5px 10px', fontSize: '12px' }}
+          onClick={onLayoutToggle}
+        >
+          TOGGLE LAYOUT ({layoutDirection})
+        </button>
+      </div>
       <ReactFlow
         nodes={nodes}
         edges={edges}
