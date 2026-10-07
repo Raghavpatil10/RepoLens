@@ -8,6 +8,7 @@ from .discovery import discover_files, language_breakdown
 from .security_scan import run_bandit
 from .static_analysis import analyze_python_file, maintainability_index
 from .code_context import get_code_context
+from .diagram_generator import generate_diagram
 
 
 def build_evidence(repo_path: Path, project_name: str) -> Dict:
@@ -81,12 +82,15 @@ def build_evidence(repo_path: Path, project_name: str) -> Dict:
         total_lines=overview["total_lines"],
     )
 
+    diagram = generate_diagram(repo_path, files)
+
     return {
         "overview": overview,
         "issues": all_issues,
         "security": security_findings,
         "dependencies": [dependency_report] if dependency_report else [],
         "health": health,
+        "diagram": diagram,
     }
 
 
