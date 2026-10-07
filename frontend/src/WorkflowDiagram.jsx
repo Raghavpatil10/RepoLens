@@ -1,4 +1,4 @@
-import React, { useMemo, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   ReactFlow,
   Controls,
@@ -7,6 +7,7 @@ import {
   useEdgesState,
   MarkerType,
 } from '@xyflow/react';
+import { FileCode, Package } from 'lucide-react';
 import '@xyflow/react/dist/style.css';
 import dagre from 'dagre';
 
@@ -53,7 +54,10 @@ const getLayoutedElements = (nodes, edges, direction = 'TB') => {
 const CustomNode = ({ data }) => {
   return (
     <div className="react-flow__node-custom">
-      <div style={{ fontWeight: 'bold' }}>{data.label}</div>
+      <div style={{ fontWeight: 'bold', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '5px' }}>
+        <FileCode size={14} color="var(--color-cyan)" />
+        {data.label}
+      </div>
       {data.group && data.group !== 'root' && (
         <div style={{ fontSize: '10px', color: 'var(--color-cyan)', marginTop: '4px' }}>
           {data.group}
@@ -66,7 +70,10 @@ const CustomNode = ({ data }) => {
 const ExternalNode = ({ data }) => {
   return (
     <div className="react-flow__node-external">
-      <div style={{ fontWeight: 'bold' }}>{data.label}</div>
+      <div style={{ fontWeight: 'bold', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '5px' }}>
+        <Package size={14} color="var(--color-magenta)" />
+        {data.label}
+      </div>
       <div style={{ fontSize: '10px', color: 'var(--color-magenta)', marginTop: '4px' }}>
         External
       </div>
