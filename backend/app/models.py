@@ -77,6 +77,24 @@ class HealthScores(BaseModel):
     documentation: int
 
 
+class DiagramNode(BaseModel):
+    id: str
+    label: str
+    type: str  # e.g., 'file', 'module', 'component', 'entrypoint'
+    group: Optional[str] = None
+
+
+class DiagramEdge(BaseModel):
+    source: str
+    target: str
+    label: Optional[str] = None
+
+
+class Diagram(BaseModel):
+    nodes: List[DiagramNode]
+    edges: List[DiagramEdge]
+
+
 class AnalysisResult(BaseModel):
     overview: ProjectOverview
     issues: List[CodeIssue]
@@ -84,3 +102,4 @@ class AnalysisResult(BaseModel):
     dependencies: List[DependencyReport]
     health: HealthScores
     ai_summary: Optional[str] = None
+    diagram: Optional[Diagram] = None
