@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { TriangleAlert, Bug, ShieldAlert, Code2 } from 'lucide-react';
+import { TriangleAlert, Bug, ShieldAlert, Code2, Waypoints } from 'lucide-react';
+import WorkflowDiagram from './WorkflowDiagram';
 import './index.css';
 
 const CodeSnippet = ({ context }) => {
@@ -170,6 +171,18 @@ function App() {
                 <div className="log-text" style={{ whiteSpace: 'pre-wrap', fontSize: '1rem', lineHeight: '1.4', color: 'var(--color-gray)' }}>
                   {result.ai_summary}
                 </div>
+              </div>
+            )}
+
+            {/* Workflow Diagram */}
+            {result.diagram && (
+              <div className="panel" style={{ marginTop: '20px' }}>
+                <div className="log-header">
+                  <div className="log-title retro-font" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                    <Waypoints size={16} /> WORKFLOW DIAGRAM
+                  </div>
+                </div>
+                <WorkflowDiagram diagramData={result.diagram} />
               </div>
             )}
 
