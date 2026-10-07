@@ -15,6 +15,7 @@ RepoLens combines deterministic static analysis with a retro 8-bit cyber-arcade 
 - 🐛 **Code Issues Inspection:** Detects code quality issues, cyclomatic complexity (via Radon), deep nesting, and anti-patterns with precise file paths, line numbers, and suggestions.
 - 🛡️ **Security Vulnerabilities:** Identifies security risks and bandit test findings with assigned severity levels (Critical, High, Medium, Low).
 - 🤖 **AI Summary (Optional):** Synthesizes structured technical evidence into clear, actionable prose using Claude (Anthropic API).
+- 🕸️ **Workflow Diagram:** Interactive visual representation of how the repository's modules and files are connected using React Flow and AST imports.
 
 ---
 
@@ -83,10 +84,13 @@ GitHub Repo URL
 6. evidence.py          ── Aggregate structured JSON results
    │
    ▼
-7. ai_explainer.py      ── (Optional) Claude analyzes the JSON and writes a summary
+7. diagram_generator.py ── Build AST dependency graph for React Flow visualization
    │
    ▼
-8. React Frontend (UI)  ── Renders cards, code issues, security findings, and advice
+8. ai_explainer.py      ── (Optional) Claude analyzes the JSON and writes a summary
+   │
+   ▼
+9. React Frontend (UI)  ── Renders cards, code issues, security findings, diagrams and advice
 ```
 
 ---
@@ -170,7 +174,7 @@ Open `http://localhost:5173` in your browser.
 - [ ] Background job queue (Celery / Redis) with polling for scanning very large repositories.
 - [ ] Secret detection via tools like `gitleaks` or `detect-secrets`.
 - [ ] Dependency scanning support for `package.json`, `pnpm-lock.yaml`, and `go.mod`.
-- [ ] Interactive call graph and architecture diagram generation.
+- [x] Interactive call graph and architecture diagram generation.
 
 ---
 
