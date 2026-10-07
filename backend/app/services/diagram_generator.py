@@ -51,6 +51,21 @@ def generate_diagram(repo_path: Path, files: List[Dict[str, Any]]) -> Dict[str, 
                                 "target": target_node_id,
                                 "label": "imports"
                             })
+                        else:
+                            ext_node = target_node_id.split(".")[0]
+                            if ext_node not in node_ids:
+                                nodes.append({
+                                    "id": ext_node,
+                                    "label": ext_node,
+                                    "type": "external",
+                                    "group": "external"
+                                })
+                                node_ids.add(ext_node)
+                            edges.append({
+                                "source": source_node_id,
+                                "target": ext_node,
+                                "label": "uses"
+                            })
                 elif isinstance(node, ast.ImportFrom):
                     if node.module:
                         target_module = node.module
@@ -79,6 +94,24 @@ def generate_diagram(repo_path: Path, files: List[Dict[str, Any]]) -> Dict[str, 
                                     "target": target_node_id,
                                     "label": "imports"
                                 })
+                            else:
+                                # External from import
+                                if target_module not in node_ids:
+                                    ext_node = target_module.split(".")[0]
+                                    if ext_node not in node_ids:
+                                        nodes.append({
+                                            "id": ext_node,
+                                            "label": ext_node,
+                                            "type": "external",
+                                            "group": "external"
+                                        })
+                                        node_ids.add(ext_node)
+                                    edges.append({
+                                        "source": source_node_id,
+                                        "target": ext_node,
+                                        "label": "uses"
+                                    })
+
         except Exception:
             pass
 
