@@ -104,6 +104,9 @@ const WorkflowDiagram = ({ diagramData }) => {
         id: `e-${e.source}-${e.target}-${idx}`,
         source: e.source,
         target: e.target,
+        label: e.label,
+        labelStyle: { fill: 'var(--color-magenta)', fontWeight: 'bold' },
+        labelBgStyle: { fill: 'var(--color-bg-darker)', fillOpacity: 0.8 },
         animated: true,
         style: { stroke: 'var(--color-magenta)', strokeWidth: 2 },
         markerEnd: {
