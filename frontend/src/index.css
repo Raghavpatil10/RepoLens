@@ -669,6 +669,25 @@ h1, h2, h3, h4, .retro-font {
   transform: scale(1.05);
 }
 
+.react-flow__node-external {
+  background: rgba(30, 20, 30, 0.8);
+  border: 1px dashed var(--color-magenta);
+  border-radius: 4px;
+  padding: 10px 15px;
+  color: var(--color-text);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  text-align: center;
+  backdrop-filter: blur(4px);
+  box-shadow: 0 0 10px rgba(255, 0, 255, 0.2);
+  transition: all 0.3s ease;
+}
+
+.react-flow__node-external:hover {
+  box-shadow: 0 0 15px rgba(255, 0, 255, 0.5);
+  transform: scale(1.05);
+}
+
 .react-flow__edge-path {
   stroke: var(--color-magenta);
   stroke-width: 2;

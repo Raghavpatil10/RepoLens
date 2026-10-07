@@ -63,8 +63,20 @@ const CustomNode = ({ data }) => {
   );
 };
 
+const ExternalNode = ({ data }) => {
+  return (
+    <div className="react-flow__node-external">
+      <div style={{ fontWeight: 'bold' }}>{data.label}</div>
+      <div style={{ fontSize: '10px', color: 'var(--color-magenta)', marginTop: '4px' }}>
+        External
+      </div>
+    </div>
+  );
+};
+
 const nodeTypes = {
   custom: CustomNode,
+  external: ExternalNode,
 };
 
 const WorkflowDiagram = ({ diagramData }) => {
@@ -75,7 +87,7 @@ const WorkflowDiagram = ({ diagramData }) => {
     if (diagramData && diagramData.nodes && diagramData.edges) {
       const initialNodes = diagramData.nodes.map((n) => ({
         id: n.id,
-        type: 'custom',
+        type: n.type === 'external' ? 'external' : 'custom',
         data: { label: n.label, group: n.group },
         position: { x: 0, y: 0 },
       }));
