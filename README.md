@@ -1,4 +1,4 @@
-# RepoLens 👾 
+# RepoLens 
 
 > **Insert Repo Link to Scan Repository** 👾
 >
