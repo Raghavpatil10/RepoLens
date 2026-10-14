@@ -161,16 +161,29 @@ const WorkflowDiagram = ({ diagramData }) => {
     setLayoutDirection((prev) => (prev === 'TB' ? 'LR' : 'TB'));
   };
 
+  const nodeCount = nodes.length;
+  const edgeCount = edges.length;
+
   return (
     <div className="diagram-panel">
-      <div style={{ position: 'absolute', top: 10, right: 10, zIndex: 4 }}>
+      <div className="diagram-toolbar">
+        <div className="diagram-stats">
+          <span className="diagram-stat"><span style={{ color: '#00f0ff' }}>{nodeCount}</span> nodes</span>
+          <span className="diagram-stat"><span style={{ color: '#ff003c' }}>{edgeCount}</span> edges</span>
+        </div>
         <button
           className="search-btn glitch-hover"
-          style={{ padding: '5px 10px', fontSize: '12px' }}
+          style={{ padding: '5px 10px', fontSize: '11px' }}
           onClick={onLayoutToggle}
         >
-          TOGGLE LAYOUT ({layoutDirection})
+          {layoutDirection === 'TB' ? '↕ VERTICAL' : '↔ HORIZONTAL'}
         </button>
+      </div>
+      <div className="diagram-legend">
+        <span className="legend-item"><span style={{ display: 'inline-block', width: 10, height: 10, border: '1px solid #00f0ff', background: 'rgba(20,20,30,0.9)', marginRight: 4 }}></span> Project File</span>
+        <span className="legend-item"><span style={{ display: 'inline-block', width: 10, height: 10, border: '1px dashed #ff003c', background: 'rgba(30,15,20,0.9)', marginRight: 4 }}></span> External Dep</span>
+        <span className="legend-item"><span style={{ display: 'inline-block', width: 16, height: 2, background: '#00f0ff', marginRight: 4, verticalAlign: 'middle' }}></span> imports</span>
+        <span className="legend-item"><span style={{ display: 'inline-block', width: 16, height: 2, background: '#ff003c', marginRight: 4, verticalAlign: 'middle' }}></span> uses</span>
       </div>
       <ReactFlow
         nodes={nodes}
@@ -179,10 +192,13 @@ const WorkflowDiagram = ({ diagramData }) => {
         onEdgesChange={onEdgesChange}
         nodeTypes={nodeTypes}
         fitView
+        fitViewOptions={{ padding: 0.2 }}
+        minZoom={0.1}
+        maxZoom={2}
         attributionPosition="bottom-right"
       >
-        <Controls style={{ button: { backgroundColor: 'var(--color-bg)', color: 'var(--color-cyan)', border: '1px solid var(--color-cyan)' } }} />
-        <Background color="var(--color-cyan)" gap={16} size={1} />
+        <Controls />
+        <Background color="#222" gap={20} size={1} />
       </ReactFlow>
     </div>
   );
