@@ -56,6 +56,7 @@ const getLayoutedElements = (nodes, edges, direction = 'TB') => {
 const CustomNode = ({ data }) => {
   return (
     <div className="react-flow__node-custom">
+      <Handle type="target" position={Position.Top} style={{ background: 'var(--color-cyan)', border: 'none', width: 6, height: 6 }} />
       <div style={{ fontWeight: 'bold', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '5px' }}>
         <FileCode size={14} color="var(--color-cyan)" />
         {data.label}
@@ -65,6 +66,7 @@ const CustomNode = ({ data }) => {
           {data.group}
         </div>
       )}
+      <Handle type="source" position={Position.Bottom} style={{ background: 'var(--color-cyan)', border: 'none', width: 6, height: 6 }} />
     </div>
   );
 };
