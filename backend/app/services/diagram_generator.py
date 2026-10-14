@@ -266,6 +266,11 @@ def generate_diagram(repo_path: Path, files: List[Dict[str, Any]]) -> Dict[str, 
                 package_name = group.split("/")[-1] if group != "root" else "root"
                 label = f"📦 {package_name}"
                 file_type = "package"
+            elif label in ("main.py", "app.py", "manage.py", "wsgi.py", "asgi.py",
+                           "index.js", "index.ts", "main.js", "main.ts",
+                           "App.jsx", "App.tsx", "main.jsx", "main.tsx"):
+                file_type = "entrypoint"
+                label = f"🚀 {label}"
 
             nodes.append({
                 "id": node_id,
