@@ -53,9 +53,11 @@ const getLayoutedElements = (nodes, edges, direction = 'TB') => {
 };
 
 const CustomNode = ({ data }) => {
+  const targetPos = data.targetPosition === 'left' ? Position.Left : Position.Top;
+  const sourcePos = data.sourcePosition === 'right' ? Position.Right : Position.Bottom;
   return (
     <div className="react-flow__node-custom">
-      <Handle type="target" position={Position.Top} style={{ background: 'var(--color-cyan)', border: 'none', width: 6, height: 6 }} />
+      <Handle type="target" position={targetPos} style={{ background: 'var(--color-cyan)', border: 'none', width: 6, height: 6 }} />
       <div style={{ fontWeight: 'bold', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '5px' }}>
         <FileCode size={14} color="var(--color-cyan)" />
         {data.label}
@@ -65,15 +67,17 @@ const CustomNode = ({ data }) => {
           {data.group}
         </div>
       )}
-      <Handle type="source" position={Position.Bottom} style={{ background: 'var(--color-cyan)', border: 'none', width: 6, height: 6 }} />
+      <Handle type="source" position={sourcePos} style={{ background: 'var(--color-cyan)', border: 'none', width: 6, height: 6 }} />
     </div>
   );
 };
 
 const ExternalNode = ({ data }) => {
+  const targetPos = data.targetPosition === 'left' ? Position.Left : Position.Top;
+  const sourcePos = data.sourcePosition === 'right' ? Position.Right : Position.Bottom;
   return (
     <div className="react-flow__node-external">
-      <Handle type="target" position={Position.Top} style={{ background: 'var(--color-magenta)', border: 'none', width: 6, height: 6 }} />
+      <Handle type="target" position={targetPos} style={{ background: 'var(--color-magenta)', border: 'none', width: 6, height: 6 }} />
       <div style={{ fontWeight: 'bold', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '5px' }}>
         <Package size={14} color="var(--color-magenta)" />
         {data.label}
@@ -81,7 +85,7 @@ const ExternalNode = ({ data }) => {
       <div style={{ fontSize: '10px', color: 'var(--color-magenta)', marginTop: '4px' }}>
         External
       </div>
-      <Handle type="source" position={Position.Bottom} style={{ background: 'var(--color-magenta)', border: 'none', width: 6, height: 6 }} />
+      <Handle type="source" position={sourcePos} style={{ background: 'var(--color-magenta)', border: 'none', width: 6, height: 6 }} />
     </div>
   );
 };
@@ -98,10 +102,16 @@ const WorkflowDiagram = ({ diagramData }) => {
 
   useEffect(() => {
     if (diagramData && diagramData.nodes && diagramData.edges) {
+      const isHorizontal = layoutDirection === 'LR';
       const initialNodes = diagramData.nodes.map((n) => ({
         id: n.id,
         type: n.type === 'external' ? 'external' : 'custom',
-        data: { label: n.label, group: n.group },
+        data: {
+          label: n.label,
+          group: n.group,
+          targetPosition: isHorizontal ? 'left' : 'top',
+          sourcePosition: isHorizontal ? 'right' : 'bottom',
+        },
         position: { x: 0, y: 0 },
       }));
 
