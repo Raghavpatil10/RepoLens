@@ -74,6 +74,7 @@ const CustomNode = ({ data }) => {
 const ExternalNode = ({ data }) => {
   return (
     <div className="react-flow__node-external">
+      <Handle type="target" position={Position.Top} style={{ background: 'var(--color-magenta)', border: 'none', width: 6, height: 6 }} />
       <div style={{ fontWeight: 'bold', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '5px' }}>
         <Package size={14} color="var(--color-magenta)" />
         {data.label}
@@ -81,6 +82,7 @@ const ExternalNode = ({ data }) => {
       <div style={{ fontSize: '10px', color: 'var(--color-magenta)', marginTop: '4px' }}>
         External
       </div>
+      <Handle type="source" position={Position.Bottom} style={{ background: 'var(--color-magenta)', border: 'none', width: 6, height: 6 }} />
     </div>
   );
 };
