@@ -115,7 +115,15 @@ const WorkflowDiagram = ({ diagramData }) => {
         position: { x: 0, y: 0 },
       }));
 
-      const initialEdges = diagramData.edges.map((e, idx) => {
+      // Build a set of valid node IDs to filter out orphan edges
+      const nodeIdSet = new Set(initialNodes.map((n) => n.id));
+
+      // Only keep edges where both source and target exist
+      const validEdges = diagramData.edges.filter(
+        (e) => nodeIdSet.has(e.source) && nodeIdSet.has(e.target)
+      );
+
+      const initialEdges = validEdges.map((e, idx) => {
         const isExternal = e.label === 'uses';
         const color = isExternal ? '#ff003c' : '#00f0ff';
         return {
