@@ -115,20 +115,28 @@ const WorkflowDiagram = ({ diagramData }) => {
         position: { x: 0, y: 0 },
       }));
 
-      const initialEdges = diagramData.edges.map((e, idx) => ({
-        id: `e-${e.source}-${e.target}-${idx}`,
-        source: e.source,
-        target: e.target,
-        label: e.label,
-        labelStyle: { fill: 'var(--color-magenta)', fontWeight: 'bold' },
-        labelBgStyle: { fill: 'var(--color-bg-darker)', fillOpacity: 0.8 },
-        animated: true,
-        style: { stroke: 'var(--color-magenta)', strokeWidth: 2 },
-        markerEnd: {
-          type: MarkerType.ArrowClosed,
-          color: 'var(--color-magenta)',
-        },
-      }));
+      const initialEdges = diagramData.edges.map((e, idx) => {
+        const isExternal = e.label === 'uses';
+        const color = isExternal ? '#ff003c' : '#00f0ff';
+        return {
+          id: `e-${e.source}-${e.target}-${idx}`,
+          source: e.source,
+          target: e.target,
+          type: 'smoothstep',
+          label: e.label,
+          labelStyle: { fill: color, fontWeight: 'bold', fontSize: 10 },
+          labelBgStyle: { fill: '#141414', fillOpacity: 0.9 },
+          labelBgPadding: [4, 2],
+          animated: isExternal,
+          style: { stroke: color, strokeWidth: isExternal ? 1.5 : 2 },
+          markerEnd: {
+            type: MarkerType.ArrowClosed,
+            color: color,
+            width: 16,
+            height: 16,
+          },
+        };
+      });
 
       const { nodes: layoutedNodes, edges: layoutedEdges } = getLayoutedElements(
         initialNodes,
