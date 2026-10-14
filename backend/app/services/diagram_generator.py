@@ -260,10 +260,17 @@ def generate_diagram(repo_path: Path, files: List[Dict[str, Any]]) -> Dict[str, 
             label = rel_path.split("/")[-1]
             group = str(f["path"].parent.relative_to(repo_path)) if f["path"].parent != repo_path else "root"
 
+            # __init__.py represents a package — use the package name as label
+            file_type = "file"
+            if label == "__init__.py":
+                package_name = group.split("/")[-1] if group != "root" else "root"
+                label = f"📦 {package_name}"
+                file_type = "package"
+
             nodes.append({
                 "id": node_id,
                 "label": label,
-                "type": "file",
+                "type": file_type,
                 "group": group,
             })
             node_ids.add(node_id)
