@@ -718,3 +718,47 @@ h1, h2, h3, h4, .retro-font {
   fill: var(--color-cyan) !important;
 }
 
+/* Diagram Toolbar */
+.diagram-toolbar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 12px;
+  background: rgba(14, 14, 14, 0.85);
+  border-bottom: 1px solid var(--border-color);
+  z-index: 5;
+  backdrop-filter: blur(6px);
+}
+
+.diagram-stats {
+  display: flex;
+  gap: 16px;
+}
+
+.diagram-stat {
+  font-family: 'Press Start 2P', cursive;
+  font-size: 0.5rem;
+  color: var(--color-gray);
+}
+
+/* Diagram Legend */
+.diagram-legend {
+  position: absolute;
+  bottom: 8px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 16px;
+  padding: 6px 14px;
+  background: rgba(14, 14, 14, 0.85);
+  border: 1px solid var(--border-color);
+  z-index: 5;
+  font-family: 'VT323', monospace;
+  font-size: 0.85rem;
+  color: var(--color-gray);
+  backdrop-filter: blur(6px);
+}
