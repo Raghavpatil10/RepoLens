@@ -90,9 +90,29 @@ const ExternalNode = ({ data }) => {
   );
 };
 
+const EntrypointNode = ({ data }) => {
+  const targetPos = data.targetPosition === 'left' ? Position.Left : Position.Top;
+  const sourcePos = data.sourcePosition === 'right' ? Position.Right : Position.Bottom;
+  return (
+    <div className="react-flow__node-entrypoint">
+      <Handle type="target" position={targetPos} style={{ background: '#39ff14', border: 'none', width: 6, height: 6 }} />
+      <div style={{ fontWeight: 'bold', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '5px' }}>
+        {data.label}
+      </div>
+      {data.group && data.group !== 'root' && (
+        <div style={{ fontSize: '10px', color: '#39ff14', marginTop: '4px' }}>
+          {data.group}
+        </div>
+      )}
+      <Handle type="source" position={sourcePos} style={{ background: '#39ff14', border: 'none', width: 6, height: 6 }} />
+    </div>
+  );
+};
+
 const nodeTypes = {
   custom: CustomNode,
   external: ExternalNode,
+  entrypoint: EntrypointNode,
 };
 
 const WorkflowDiagram = ({ diagramData }) => {
@@ -103,9 +123,10 @@ const WorkflowDiagram = ({ diagramData }) => {
   useEffect(() => {
     if (diagramData && diagramData.nodes && diagramData.edges) {
       const isHorizontal = layoutDirection === 'LR';
+      const nodeTypeMap = { external: 'external', entrypoint: 'entrypoint', package: 'custom', file: 'custom' };
       const initialNodes = diagramData.nodes.map((n) => ({
         id: n.id,
-        type: n.type === 'external' ? 'external' : 'custom',
+        type: nodeTypeMap[n.type] || 'custom',
         data: {
           label: n.label,
           group: n.group,
