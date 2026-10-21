@@ -9,7 +9,8 @@ from radon.metrics import mi_visit
 
 LONG_FUNCTION_THRESHOLD = 50
 MAX_NESTED_LOOP_DEPTH = 3
-DB_CALL_HINTS = {"query", "get", "find", "select", "fetch", "filter", "execute"}
+DB_CALL_HINTS = {"execute", "fetchall", "fetchone", "fetchmany", "raw_query", "raw_sql", "execute_sql"}
+DB_OBJECT_HINTS = {"db", "session", "cursor", "conn", "connection", "query", "repo", "repository"}
 
 
 def _nested_loop_depth(node: ast.AST, depth: int = 0) -> int:
@@ -26,9 +27,14 @@ def _calls_in_loop(loop_node: ast.AST) -> List[str]:
     hits = []
     for child in ast.walk(loop_node):
         if isinstance(child, ast.Call):
-            name = getattr(child.func, "attr", None) or getattr(child.func, "id", None)
-            if name and any(hint in name.lower() for hint in DB_CALL_HINTS):
-                hits.append(name)
+            # Check for database method execution or calls on db/session objects
+            if isinstance(child.func, ast.Attribute):
+                method_name = child.func.attr
+                caller_name = getattr(child.func.value, "id", None) or getattr(child.func.value, "attr", None)
+                if caller_name and any(db_hint in str(caller_name).lower() for db_hint in DB_OBJECT_HINTS):
+                    hits.append(f"{caller_name}.{method_name}")
+                elif method_name.lower() in DB_CALL_HINTS:
+                    hits.append(method_name)
     return hits
 
 
