@@ -11,18 +11,20 @@
 RepoLens combines deterministic static analysis with a retro 8-bit cyber-arcade aesthetic. It shallow-clones a public repository, runs static analysis, AST inspection, security audits (via Bandit), and dependency vulnerability checks (via pip-audit), and surfaces findings in a dynamic React dashboard.
 
 ### Key Features
-- 🕹️ **Retro Arcade UI:** Built with React & Vite, featuring custom pixel typography (`Press Start 2P`, `VT323`), CRT scanlines, neon accents, and responsive status tags.
-- 🐛 **Code Issues Inspection:** Detects code quality issues, cyclomatic complexity (via Radon), deep nesting, and anti-patterns with precise file paths, line numbers, and suggestions.
-- 🛡️ **Security Vulnerabilities:** Identifies security risks and bandit test findings with assigned severity levels (Critical, High, Medium, Low).
-- 🤖 **AI Summary (Optional):** Synthesizes structured technical evidence into clear, actionable prose using Claude (Anthropic API).
-- 🕸️ **Workflow Diagram:** Interactive visual representation of how the repository's modules and files are connected using React Flow and AST imports.
+- 🕹️ **Retro Arcade UI:** Built with React & Vite, featuring custom pixel typography (`Press Start 2P`, `VT323`), CRT scanlines, neon accents, and interactive category filters.
+- 💥 **Accurate Bug & Syntax Detection:** Catches real Python `SyntaxError`s, undefined variables, mutable default arguments, unreachable dead code, duplicate dictionary keys, and Ruff linter findings.
+- 🛡️ **Security & Secret Scanner:** Detects exposed API keys (OpenAI, AWS, GitHub, Stripe, Slack, Private Keys) alongside Bandit security vulnerability scans.
+- ⚙️ **Multi-Language & Config Validator:** Validates JSON and YAML syntax for configuration and CI/CD pipelines, plus JavaScript/TypeScript runtime anti-patterns.
+- 🤖 **Executive Technical Summary:** Synthesizes structured findings into an actionable summary using Claude or intelligent local heuristics.
+- 🕸️ **Workflow Diagram:** Interactive visual representation of repository module architecture using React Flow.
 
 ---
 
 ## Tech Stack
-- **Frontend**: React, Vite, CSS
-- **Backend**: Python, FastAPI
-- **Security Tools**: Bandit, pip-audit
+- **Frontend**: React, Vite, CSS, Lucide React
+- **Backend**: Python 3.10+, FastAPI, Uvicorn
+- **Error & Linter Tools**: Ruff, Python AST parser
+- **Security Tools**: Secret Scanner, Bandit, pip-audit
 
 ---
 
@@ -35,6 +37,8 @@ repolens/
 ├── backend/
 │   ├── requirements.txt
 │   ├── .env.example
+│   ├── tests/
+│   │   └── test_error_detection.py # Automated test suite for error detection
 │   └── app/
 │       ├── main.py                # FastAPI app entrypoint & CORS config
 │       ├── models.py              # Pydantic schemas — the API data contract
@@ -43,19 +47,23 @@ repolens/
 │       └── services/
 │           ├── cloner.py          # Shallow-clones the repo, cleans up temp files
 │           ├── discovery.py       # Walks files, detects languages, counts LOC
-│           ├── static_analysis.py # AST parsing, nested loops, complexity (radon)
+│           ├── linter.py          # Ruff linter runner for real bug detection
+│           ├── secret_scan.py     # Scans for exposed API keys & credentials
+│           ├── config_validator.py# JSON and YAML syntax validation
+│           ├── js_ts_analysis.py  # JavaScript/TypeScript bug and pattern analysis
+│           ├── static_analysis.py # AST inspection: syntax errors, mutable defaults, complexity
 │           ├── security_scan.py   # Wraps Bandit for Python security scans
 │           ├── dependency_scan.py # Parses requirements.txt, runs pip-audit
 │           ├── evidence.py        # Assembles structured evidence & scores
-│           └── ai_explainer.py    # Sends structured findings to Claude (optional)
+│           └── ai_explainer.py    # Executive summary generation (Claude or fallback)
 └── frontend/
     ├── index.html                 # HTML shell with Google Fonts
     ├── package.json               # React dependencies & scripts
     ├── vite.config.js             # Vite configuration
     └── src/
         ├── main.jsx               # React DOM root
-        ├── App.jsx                # Arcade dashboard, search, & results view
-        └── index.css              # Cyber-arcade styling, scanlines, animations
+        ├── App.jsx                # Arcade dashboard, category tabs, & findings
+        └── index.css              # Cyber-arcade styling, glow animations, scanlines
 ```
 
 ---
