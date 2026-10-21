@@ -91,6 +91,24 @@ def analyze_python_file(path: Path, rel_path: str) -> Tuple[List[Dict], Dict]:
                 "suggestion": "Consider a hash-map based lookup to flatten the nesting.",
             })
 
+        # Detect mutable default arguments (e.g. def func(a=[]))
+        all_defaults = [d for d in fn.args.defaults if d]
+        if hasattr(fn.args, "kw_defaults"):
+            all_defaults.extend([d for d in fn.args.kw_defaults if d])
+
+        for default in all_defaults:
+            if isinstance(default, (ast.List, ast.Dict, ast.Set)):
+                issues.append({
+                    "severity": "HIGH",
+                    "category": "bug",
+                    "file": rel_path,
+                    "line": getattr(default, "lineno", fn.lineno),
+                    "func_start_line": fn.lineno,
+                    "func_end_line": end_line,
+                    "message": f"Mutable default argument ({type(default).__name__.lower()}) in '{fn.name}'.",
+                    "suggestion": "Use None as the default value and initialize inside the function body to avoid shared state bugs.",
+                })
+
     for node in ast.walk(tree):
         if isinstance(node, (ast.For, ast.While)):
             hits = _calls_in_loop(node)
