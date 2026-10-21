@@ -3,12 +3,16 @@ from __future__ import annotations
 from pathlib import Path
 from typing import Dict, List, Optional
 
+from .code_context import get_code_context
+from .config_validator import validate_config_files
 from .dependency_scan import parse_requirements
+from .diagram_generator import generate_diagram
 from .discovery import discover_files, language_breakdown
+from .js_ts_analysis import analyze_js_ts_file
+from .linter import run_ruff_linter
+from .secret_scan import scan_secrets
 from .security_scan import run_bandit
 from .static_analysis import analyze_python_file, maintainability_index
-from .code_context import get_code_context
-from .diagram_generator import generate_diagram
 
 
 def build_evidence(repo_path: Path, project_name: str) -> Dict:
@@ -24,20 +28,44 @@ def build_evidence(repo_path: Path, project_name: str) -> Dict:
     mi_scores: List[float] = []
 
     for f in files:
-        if f["language"] != "Python":
-            continue
         rel_path = str(f["path"].relative_to(repo_path))
-        issues, counts = analyze_python_file(f["path"], rel_path)
-        all_issues.extend(issues)
-        total_functions += counts["functions"]
-        total_classes += counts["classes"]
-        try:
-            source = f["path"].read_text(encoding="utf-8", errors="ignore")
-            mi_scores.append(maintainability_index(source))
-        except OSError:
-            pass
+        if f["language"] == "Python":
+            issues, counts = analyze_python_file(f["path"], rel_path)
+            all_issues.extend(issues)
+            total_functions += counts["functions"]
+            total_classes += counts["classes"]
+            try:
+                source = f["path"].read_text(encoding="utf-8", errors="ignore")
+                mi_scores.append(maintainability_index(source))
+            except OSError:
+                pass
+        elif f["language"] in {"JavaScript", "TypeScript"}:
+            js_issues = analyze_js_ts_file(f["path"], rel_path)
+            all_issues.extend(js_issues)
 
+    # Run Ruff linter for deterministic, industry-standard Python bug detection
+    ruff_issues = run_ruff_linter(repo_path)
+    all_issues.extend(ruff_issues)
+
+    # Validate syntax for JSON and YAML config files
+    config_issues = validate_config_files(repo_path)
+    all_issues.extend(config_issues)
+
+    # Deduplicate issues with identical file, line, and message prefix
+    seen_issue_keys = set()
+    deduped_issues = []
+    for issue in all_issues:
+        key = (issue.get("file"), issue.get("line"), issue.get("message", "")[:25])
+        if key not in seen_issue_keys:
+            seen_issue_keys.add(key)
+            deduped_issues.append(issue)
+    all_issues = deduped_issues
+
+    # Run Bandit security audit and Secret scan
     security_findings = run_bandit(repo_path)
+    secret_findings = scan_secrets(repo_path)
+    security_findings.extend(secret_findings)
+
     dependency_report = parse_requirements(repo_path)
 
     # Add code context to all static analysis issues
