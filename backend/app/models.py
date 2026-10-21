@@ -38,8 +38,8 @@ class CodeContext(BaseModel):
 
 
 class CodeIssue(BaseModel):
-    severity: str  # HIGH, MEDIUM, LOW
-    category: str  # performance, quality, complexity
+    severity: str  # CRITICAL, HIGH, MEDIUM, LOW
+    category: str  # syntax, bug, performance, quality, complexity, security
     file: str
     line: Optional[int] = None
     message: str
@@ -48,11 +48,12 @@ class CodeIssue(BaseModel):
 
 
 class SecurityFinding(BaseModel):
-    severity: str
+    severity: str  # CRITICAL, HIGH, MEDIUM, LOW
     file: str
     line: Optional[int] = None
     issue: str
     test_id: Optional[str] = None
+    suggestion: Optional[str] = None
     code_context: Optional[CodeContext] = None
 
 
