@@ -762,3 +762,112 @@ h1, h2, h3, h4, .retro-font {
   color: var(--color-gray);
   backdrop-filter: blur(6px);
 }
+
+/* Critical Warning and Dashboard Cards */
+.warning-card-critical {
+  border-color: rgba(255, 0, 85, 0.4);
+  box-shadow: 0 0 10px rgba(255, 0, 85, 0.2);
+}
+.warning-icon.critical-icon {
+  color: #ff0055;
+  animation: pulse-icon 1.5s infinite;
+}
+.warning-number.critical-number {
+  color: #ff0055;
+  text-shadow: 0 0 10px rgba(255, 0, 85, 0.7);
+}
+.warning-border.critical-border {
+  background: repeating-linear-gradient(
+    45deg,
+    #ff0055,
+    #ff0055 5px,
+    #111 5px,
+    #111 10px
+  );
+}
+
+@keyframes pulse-icon {
+  0%, 100% { opacity: 0.8; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.1); filter: drop-shadow(0 0 8px #ff0055); }
+}
+
+/* Filter Tabs */
+.filter-tabs-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 24px;
+  margin-bottom: 12px;
+}
+.filter-tab {
+  background: #0f0f0f;
+  border: 1px solid #2a2a2a;
+  color: var(--color-gray);
+  padding: 8px 12px;
+  font-size: 0.6rem;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.filter-tab:hover {
+  border-color: var(--color-cyan);
+  color: #ffffff;
+}
+.filter-tab.active {
+  background: var(--color-cyan);
+  color: #000;
+  border-color: var(--color-cyan);
+  box-shadow: 0 0 10px rgba(0, 255, 238, 0.4);
+}
+.filter-tab.critical-tab.active {
+  background: #ff0055;
+  color: #ffffff;
+  border-color: #ff0055;
+  box-shadow: 0 0 12px rgba(255, 0, 85, 0.6);
+}
+.filter-tab.security-tab.active {
+  background: #ffaa00;
+  color: #000000;
+  border-color: #ffaa00;
+  box-shadow: 0 0 10px rgba(255, 170, 0, 0.4);
+}
+.filter-tab.quality-tab.active {
+  background: var(--color-magenta);
+  color: #ffffff;
+  border-color: var(--color-magenta);
+  box-shadow: 0 0 10px rgba(255, 0, 234, 0.4);
+}
+
+/* Finding Cards & Category Badges */
+.critical-glow-card {
+  border: 1px solid #ff0055 !important;
+  box-shadow: 0 0 14px rgba(255, 0, 85, 0.25) !important;
+}
+
+.finding-badge.critical,
+.badge-critical-pulse {
+  background: #ff0055 !important;
+  color: #ffffff !important;
+  animation: pulse-critical 1.5s infinite;
+}
+
+@keyframes pulse-critical {
+  0%, 100% { box-shadow: 0 0 3px #ff0055; }
+  50% { box-shadow: 0 0 12px #ff0055; }
+}
+
+.tag-syntax {
+  color: #ff0055 !important;
+}
+.tag-bug {
+  color: #00ffee !important;
+}
+.tag-secret {
+  color: #ff3366 !important;
+}
+.test-id-badge {
+  color: #777;
+  font-size: 0.75rem;
+  border-left: 1px solid #333;
+  padding-left: 8px;
+}
