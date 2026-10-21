@@ -68,6 +68,7 @@ function App() {
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState(null);
   const [error, setError] = useState(null);
+  const [filterTab, setFilterTab] = useState('ALL'); // 'ALL' | 'CRITICAL' | 'SECURITY' | 'QUALITY'
 
   const handleAnalyze = async () => {
     if (!repoUrl) return;
@@ -186,38 +187,95 @@ function App() {
               </div>
             )}
 
-            {/* Findings Cards */}
-            <div className="findings-section">
-              {result.issues.length > 0 && (
-                <>
-                  <div className="log-header" style={{ marginTop: '20px' }}>
-                    <div className="log-title retro-font" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                      <Bug size={16} /> CODE ISSUES
+            {/* Findings Section with Filter Tabs */}
+            {(() => {
+              const criticalIssuesCount = result.issues.filter(i => i.severity === 'CRITICAL' || i.category === 'syntax' || i.category === 'bug').length +
+                result.security.filter(s => s.severity === 'CRITICAL').length;
+              const qualityCount = result.issues.filter(i => i.category === 'quality' || i.category === 'complexity' || i.category === 'performance').length;
+
+              const filteredIssues = result.issues.filter(issue => {
+                if (filterTab === 'ALL') return true;
+                if (filterTab === 'CRITICAL') return issue.severity === 'CRITICAL' || issue.category === 'syntax' || issue.category === 'bug';
+                if (filterTab === 'QUALITY') return issue.category === 'quality' || issue.category === 'complexity' || issue.category === 'performance';
+                if (filterTab === 'SECURITY') return issue.category === 'security';
+                return true;
+              });
+
+              const filteredSecurity = result.security.filter(sec => {
+                if (filterTab === 'ALL' || filterTab === 'SECURITY') return true;
+                if (filterTab === 'CRITICAL') return sec.severity === 'CRITICAL';
+                return false;
+              });
+
+              return (
+                <div className="findings-section">
+                  <div className="filter-tabs-container">
+                    <button
+                      className={`filter-tab retro-font ${filterTab === 'ALL' ? 'active' : ''}`}
+                      onClick={() => setFilterTab('ALL')}
+                    >
+                      ALL ({result.issues.length + result.security.length})
+                    </button>
+                    <button
+                      className={`filter-tab retro-font critical-tab ${filterTab === 'CRITICAL' ? 'active' : ''}`}
+                      onClick={() => setFilterTab('CRITICAL')}
+                    >
+                      🔥 CRITICAL BUGS & SYNTAX ({criticalIssuesCount})
+                    </button>
+                    <button
+                      className={`filter-tab retro-font security-tab ${filterTab === 'SECURITY' ? 'active' : ''}`}
+                      onClick={() => setFilterTab('SECURITY')}
+                    >
+                      🛡️ SECURITY & SECRETS ({result.security.length})
+                    </button>
+                    <button
+                      className={`filter-tab retro-font quality-tab ${filterTab === 'QUALITY' ? 'active' : ''}`}
+                      onClick={() => setFilterTab('QUALITY')}
+                    >
+                      ✨ CODE QUALITY ({qualityCount})
+                    </button>
+                  </div>
+
+                  {filteredIssues.length > 0 && (
+                    <>
+                      <div className="log-header" style={{ marginTop: '20px' }}>
+                        <div className="log-title retro-font" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                          <Bug size={16} /> CODE FINDINGS ({filteredIssues.length})
+                        </div>
+                      </div>
+                      <div className="findings-grid">
+                        {filteredIssues.map((issue, idx) => (
+                          <FindingCard key={`issue-${idx}`} finding={issue} isSecurity={false} />
+                        ))}
+                      </div>
+                    </>
+                  )}
+
+                  {filteredSecurity.length > 0 && (
+                    <>
+                      <div className="log-header" style={{ marginTop: '20px' }}>
+                        <div className="log-title retro-font" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                          <ShieldAlert size={16} /> SECURITY & SECRETS ({filteredSecurity.length})
+                        </div>
+                      </div>
+                      <div className="findings-grid">
+                        {filteredSecurity.map((sec, idx) => (
+                          <FindingCard key={`sec-${idx}`} finding={sec} isSecurity={true} />
+                        ))}
+                      </div>
+                    </>
+                  )}
+
+                  {filteredIssues.length === 0 && filteredSecurity.length === 0 && (
+                    <div className="panel" style={{ marginTop: '20px', textAlign: 'center', padding: '30px' }}>
+                      <div className="retro-font" style={{ color: 'var(--color-cyan)', fontSize: '1.1rem' }}>
+                        NO FINDINGS IN THIS CATEGORY
+                      </div>
                     </div>
-                  </div>
-                  <div className="findings-grid">
-                    {result.issues.map((issue, idx) => (
-                      <FindingCard key={`issue-${idx}`} finding={issue} isSecurity={false} />
-                    ))}
-                  </div>
-                </>
-              )}
-              
-              {result.security.length > 0 && (
-                <>
-                  <div className="log-header" style={{ marginTop: '20px' }}>
-                    <div className="log-title retro-font" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                      <ShieldAlert size={16} /> SECURITY VULNERABILITIES
-                    </div>
-                  </div>
-                  <div className="findings-grid">
-                    {result.security.map((sec, idx) => (
-                      <FindingCard key={`sec-${idx}`} finding={sec} isSecurity={true} />
-                    ))}
-                  </div>
-                </>
-              )}
-            </div>
+                  )}
+                </div>
+              );
+            })()}
 
           </div>
         )}
