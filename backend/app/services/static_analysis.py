@@ -35,7 +35,25 @@ def _calls_in_loop(loop_node: ast.AST) -> List[str]:
                     hits.append(f"{caller_name}.{method_name}")
                 elif method_name.lower() in DB_CALL_HINTS:
                     hits.append(method_name)
-    return hits
+def _check_unreachable_code(body: List[ast.stmt], rel_path: str) -> List[Dict]:
+    issues = []
+    terminated = False
+    term_stmt = None
+    for stmt in body:
+        if terminated:
+            issues.append({
+                "severity": "MEDIUM",
+                "category": "bug",
+                "file": rel_path,
+                "line": getattr(stmt, "lineno", 1),
+                "message": f"Unreachable statement detected after '{term_stmt}'.",
+                "suggestion": "Review control flow logic or remove unreachable code.",
+            })
+            break
+        if isinstance(stmt, (ast.Return, ast.Raise, ast.Break, ast.Continue)):
+            terminated = True
+            term_stmt = type(stmt).__name__.lower()
+    return issues
 
 
 def analyze_python_file(path: Path, rel_path: str) -> Tuple[List[Dict], Dict]:
@@ -110,6 +128,11 @@ def analyze_python_file(path: Path, rel_path: str) -> Tuple[List[Dict], Dict]:
                 })
 
     for node in ast.walk(tree):
+        if hasattr(node, "body") and isinstance(node.body, list):
+            issues.extend(_check_unreachable_code(node.body, rel_path))
+        if hasattr(node, "orelse") and isinstance(node.orelse, list):
+            issues.extend(_check_unreachable_code(node.orelse, rel_path))
+
         if isinstance(node, (ast.For, ast.While)):
             hits = _calls_in_loop(node)
             if hits:
