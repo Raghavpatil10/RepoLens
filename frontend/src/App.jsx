@@ -167,21 +167,36 @@ function App() {
         {result && (
           <div className="dashboard-container">
             {/* Warning Cards */}
-            <div className="panel">
-              <div className="warning-cards">
-                <div className="warning-card">
-                  <TriangleAlert className="warning-icon" />
-                  <div className="warning-text retro-font">CODE ISSUES DETECTED</div>
-                  <div className="warning-number retro-font">{result.issues.length}</div>
-                  <div className="warning-border"></div>
+            {(() => {
+              const criticalCount = result.issues.filter(i => i.severity === 'CRITICAL' || i.category === 'syntax' || i.category === 'bug').length;
+              const qualityCount = result.issues.filter(i => i.category === 'quality' || i.category === 'complexity' || i.category === 'performance').length;
+              const securityCount = result.security.length;
+
+              return (
+                <div className="panel">
+                  <div className="warning-cards">
+                    <div className="warning-card warning-card-critical">
+                      <TriangleAlert className="warning-icon critical-icon" />
+                      <div className="warning-text retro-font">CRITICAL BUGS & SYNTAX</div>
+                      <div className="warning-number retro-font critical-number">{criticalCount}</div>
+                      <div className="warning-border critical-border"></div>
+                    </div>
+                    <div className="warning-card warning-card-security">
+                      <ShieldAlert className="warning-icon security-icon" />
+                      <div className="warning-text retro-font">SECURITY & SECRETS</div>
+                      <div className="warning-number retro-font">{securityCount}</div>
+                      <div className="warning-border"></div>
+                    </div>
+                    <div className="warning-card warning-card-quality">
+                      <Bug className="warning-icon quality-icon" />
+                      <div className="warning-text retro-font">CODE QUALITY & SMELLS</div>
+                      <div className="warning-number retro-font">{qualityCount}</div>
+                      <div className="warning-border"></div>
+                    </div>
+                  </div>
                 </div>
-                <div className="warning-card">
-                  <div className="warning-text retro-font" style={{ marginTop: '34px' }}>SECURITY VULNERABILITIES FOUND</div>
-                  <div className="warning-number retro-font">{result.security.length}</div>
-                  <div className="warning-border"></div>
-                </div>
-              </div>
-            </div>
+              );
+            })()}
 
             {/* AI Summary (if any) */}
             {result.ai_summary && (
