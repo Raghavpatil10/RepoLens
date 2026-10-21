@@ -143,22 +143,30 @@ def _score_health(
     kloc = max(total_lines / 1000, 1.0)
 
     quality_weight = sum(
-        3 if i["severity"] == "HIGH" else 1
-        for i in issues if i["category"] in ("quality", "complexity")
+        10 if i.get("severity") == "CRITICAL" else (
+            5 if i.get("severity") == "HIGH" else (
+                2 if i.get("severity") == "MEDIUM" else 0.5
+            )
+        )
+        for i in issues if i.get("category") in ("syntax", "bug", "quality", "complexity")
     )
     perf_weight = sum(
-        4 if i["severity"] == "HIGH" else 1.5
-        for i in issues if i["category"] == "performance"
+        4 if i.get("severity") == "HIGH" else 1.5
+        for i in issues if i.get("category") == "performance"
     )
     sec_weight = sum(
-        4 if s["severity"] == "HIGH" else (2 if s["severity"] == "MEDIUM" else 0.5)
+        10 if s.get("severity") == "CRITICAL" else (
+            5 if s.get("severity") == "HIGH" else (
+                2 if s.get("severity") == "MEDIUM" else 0.5
+            )
+        )
         for s in security_findings
     )
     dep_weight = dependency_report["vulnerable_count"] * 6 if dependency_report else 0
 
-    quality_penalty = min(60, (quality_weight / kloc) * 8)
-    perf_penalty = min(60, (perf_weight / kloc) * 8)
-    sec_penalty = min(70, (sec_weight / kloc) * 8 + dep_weight)
+    quality_penalty = min(70, (quality_weight / kloc) * 6)
+    perf_penalty = min(50, (perf_weight / kloc) * 6)
+    sec_penalty = min(80, (sec_weight / kloc) * 7 + dep_weight)
 
     maintainability = clamp(sum(mi_scores) / len(mi_scores)) if mi_scores else 60
 
