@@ -133,6 +133,24 @@ def analyze_python_file(path: Path, rel_path: str) -> Tuple[List[Dict], Dict]:
         if hasattr(node, "orelse") and isinstance(node.orelse, list):
             issues.extend(_check_unreachable_code(node.orelse, rel_path))
 
+        # Detect duplicate dictionary keys
+        if isinstance(node, ast.Dict):
+            seen_keys = set()
+            for key_node in node.keys:
+                if isinstance(key_node, ast.Constant):
+                    k_val = key_node.value
+                    if k_val in seen_keys:
+                        issues.append({
+                            "severity": "HIGH",
+                            "category": "bug",
+                            "file": rel_path,
+                            "line": getattr(key_node, "lineno", node.lineno),
+                            "message": f"Duplicate dictionary key '{k_val}' in dict literal.",
+                            "suggestion": f"Key '{k_val}' is defined multiple times and overwrites earlier values.",
+                        })
+                    else:
+                        seen_keys.add(k_val)
+
         if isinstance(node, (ast.For, ast.While)):
             hits = _calls_in_loop(node)
             if hits:
