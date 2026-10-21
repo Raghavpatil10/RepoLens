@@ -151,6 +151,27 @@ def analyze_python_file(path: Path, rel_path: str) -> Tuple[List[Dict], Dict]:
                     else:
                         seen_keys.add(k_val)
 
+        # Detect dangerous bare except clauses
+        if isinstance(node, ast.ExceptHandler):
+            if node.type is None:
+                issues.append({
+                    "severity": "HIGH",
+                    "category": "bug",
+                    "file": rel_path,
+                    "line": getattr(node, "lineno", 1),
+                    "message": "Dangerous bare 'except:' clause.",
+                    "suggestion": "Specify 'except Exception:' to avoid catching SystemExit or KeyboardInterrupt.",
+                })
+            elif isinstance(node.type, ast.Name) and node.type.id == "BaseException":
+                issues.append({
+                    "severity": "HIGH",
+                    "category": "bug",
+                    "file": rel_path,
+                    "line": getattr(node, "lineno", 1),
+                    "message": "Catching 'BaseException' can intercept system signals.",
+                    "suggestion": "Catch 'Exception' instead of 'BaseException'.",
+                })
+
         if isinstance(node, (ast.For, ast.While)):
             hits = _calls_in_loop(node)
             if hits:
