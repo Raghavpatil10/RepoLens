@@ -6,3 +6,5 @@ bandit==1.7.9
 pip-audit==2.7.3
 anthropic==0.34.2
 python-dotenv==1.0.1
+ruff>=0.17.0
+pytest>=9.0.0
