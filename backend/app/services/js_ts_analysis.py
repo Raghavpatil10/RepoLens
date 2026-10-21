@@ -15,7 +15,7 @@ JS_PATTERNS = [
         "suggestion": "Remove debugger statement before deploying to avoid freezing execution in production.",
     },
     {
-        "pattern": re.compile(r"\b(?:==|===|!=|!==)\s*NaN\b|\bNaN\s*(?:==|===|!=|!==)"),
+        "pattern": re.compile(r"(?:===|==|!==|!=)\s*NaN\b|\bNaN\s*(?:===|==|!==|!=)"),
         "severity": "HIGH",
         "category": "bug",
         "message": "Comparison with NaN is always false/true in JavaScript.",
