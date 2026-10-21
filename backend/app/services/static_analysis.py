@@ -38,8 +38,20 @@ def analyze_python_file(path: Path, rel_path: str) -> Tuple[List[Dict], Dict]:
     issues: List[Dict] = []
     try:
         source = path.read_text(encoding="utf-8", errors="ignore")
+    except OSError:
+        return issues, {"functions": 0, "classes": 0}
+
+    try:
         tree = ast.parse(source, filename=str(path))
-    except (SyntaxError, OSError):
+    except SyntaxError as err:
+        issues.append({
+            "severity": "CRITICAL",
+            "category": "syntax",
+            "file": rel_path,
+            "line": err.lineno or 1,
+            "message": f"SyntaxError: {err.msg}",
+            "suggestion": f"Check line {err.lineno}, offset {err.offset or 0}. Fix syntax error so code can run.",
+        })
         return issues, {"functions": 0, "classes": 0}
 
     functions = [n for n in ast.walk(tree) if isinstance(n, (ast.FunctionDef, ast.AsyncFunctionDef))]
