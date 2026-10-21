@@ -21,28 +21,43 @@ const CodeSnippet = ({ context }) => {
 };
 
 const FindingCard = ({ finding, isSecurity }) => {
-  const category = isSecurity ? 'SECURITY' : finding.category || 'CODE ISSUE';
+  const isSyntax = finding.category === 'syntax' || (finding.message && finding.message.includes('SyntaxError'));
+  const isSecret = finding.test_id === 'SECRET_LEAK';
+  const isBug = finding.category === 'bug';
+  
+  let categoryLabel = isSecurity ? 'SECURITY' : (finding.category ? finding.category.toUpperCase() : 'CODE ISSUE');
+  if (isSyntax) categoryLabel = 'SYNTAX ERROR';
+  if (isSecret) categoryLabel = 'SECRET LEAK';
+  if (isBug) categoryLabel = 'RUNTIME BUG';
+
   const title = isSecurity ? finding.issue : finding.message;
   const severity = (finding.severity || 'MEDIUM').toLowerCase();
+  const isCritical = severity === 'critical';
   
   return (
-    <div className="finding-card">
+    <div className={`finding-card ${isCritical ? 'critical-glow-card' : ''}`}>
       <div className="finding-card-header">
         <div className="finding-title-group">
-          <div className="finding-category">
-            {isSecurity ? <ShieldAlert size={10} style={{marginRight: '4px', verticalAlign: 'middle'}}/> : <Bug size={10} style={{marginRight: '4px', verticalAlign: 'middle'}}/>}
-            {category}
+          <div className={`finding-category tag-${finding.category || (isSecurity ? 'security' : 'quality')}`}>
+            {isSecurity || isSecret ? (
+              <ShieldAlert size={11} style={{ marginRight: '4px', verticalAlign: 'middle' }} />
+            ) : isSyntax ? (
+              <TriangleAlert size={11} style={{ marginRight: '4px', verticalAlign: 'middle', color: 'var(--color-crimson, #ff0055)' }} />
+            ) : (
+              <Bug size={11} style={{ marginRight: '4px', verticalAlign: 'middle' }} />
+            )}
+            {categoryLabel}
           </div>
           <div className="finding-title">{title}</div>
         </div>
-        <div className={`finding-badge retro-font ${severity}`}>
+        <div className={`finding-badge retro-font ${severity} ${isCritical ? 'badge-critical-pulse' : ''}`}>
           {severity.toUpperCase()}
         </div>
       </div>
       
       <div className="finding-meta">
         <div className="finding-meta-item">
-          <Code2 size={12} style={{marginRight: '4px', verticalAlign: 'middle'}}/>
+          <Code2 size={12} style={{ marginRight: '4px', verticalAlign: 'middle' }} />
           {finding.file}
         </div>
         {finding.line && (
@@ -50,11 +65,16 @@ const FindingCard = ({ finding, isSecurity }) => {
             LINE {finding.line}
           </div>
         )}
+        {finding.test_id && (
+          <div className="finding-meta-item test-id-badge">
+            RULE: {finding.test_id}
+          </div>
+        )}
       </div>
       
       {finding.suggestion && (
         <div className="finding-desc">
-          <span style={{ color: 'var(--color-cyan)' }}>Suggestion:</span> {finding.suggestion}
+          <span style={{ color: 'var(--color-cyan)', fontWeight: 'bold' }}>Suggestion:</span> {finding.suggestion}
         </div>
       )}
       
