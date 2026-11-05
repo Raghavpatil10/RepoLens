@@ -21,7 +21,7 @@ RepoLens combines deterministic static analysis with a retro 8-bit cyber-arcade 
 ---
 
 ## Tech Stack
-- **Frontend**: React, Vite, CSS, Lucide React
+- **Frontend**: React, CSS, Lucide React
 - **Backend**: Python 3.10+, FastAPI, Uvicorn
 - **Error & Linter Tools**: Ruff, Python AST parser
 - **Security Tools**: Secret Scanner, Bandit, pip-audit
