@@ -1040,6 +1040,31 @@ h1, h2, h3, h4, .retro-font {
   font-size: 0.85rem;
   color: var(--color-gray);
   backdrop-filter: blur(6px);
+  max-width: 95%;
+  white-space: nowrap;
+}
+
+@media (max-width: 640px) {
+  .diagram-legend {
+    gap: 8px 12px;
+    padding: 4px 10px;
+    font-size: 0.75rem;
+    flex-wrap: wrap;
+    justify-content: center;
+    white-space: normal;
+  }
+}
+
+@media (max-width: 440px) {
+  .diagram-legend {
+    gap: 4px 8px;
+    font-size: 0.7rem;
+    padding: 3px 6px;
+    bottom: 4px;
+  }
+  .diagram-legend .legend-item {
+    font-size: 0.7rem;
+  }
 }
 
 /* Critical Warning and Dashboard Cards */
