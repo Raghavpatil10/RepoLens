@@ -415,6 +415,12 @@ h1, h2, h3, h4, .retro-font {
   text-align: center;
 }
 
+@media (max-width: 992px) {
+  .radar-widget {
+    display: none;
+  }
+}
+
 /* Panel Common */
 .panel {
   background: var(--bg-panel);
