@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { TriangleAlert, Bug, ShieldAlert, Code2, Waypoints } from 'lucide-react';
 import WorkflowDiagram from './WorkflowDiagram';
 import './index.css';
@@ -89,6 +89,24 @@ function App() {
   const [result, setResult] = useState(null);
   const [error, setError] = useState(null);
   const [filterTab, setFilterTab] = useState('ALL'); // 'ALL' | 'CRITICAL' | 'SECURITY' | 'QUALITY'
+  const [showScrollTop, setShowScrollTop] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 300) {
+        setShowScrollTop(true);
+      } else {
+        setShowScrollTop(false);
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
 
   const handleAnalyze = async () => {
     if (!repoUrl) return;
@@ -320,6 +338,16 @@ function App() {
         <div>&copy; 2026 REPOLENS</div>
         <div className="blink">PRESS START TO CONTINUE </div>
       </footer>
+
+      {showScrollTop && (
+        <button
+          className="scroll-top-btn retro-font"
+          onClick={scrollToTop}
+          aria-label="Scroll to top"
+        >
+          ▲ TOP
+        </button>
+      )}
     </div>
   );
 }
