@@ -268,6 +268,7 @@ h1, h2, h3, h4, .retro-font {
   box-shadow: 0 0 10px rgba(0, 240, 255, 0.2), inset 0 0 10px rgba(0, 240, 255, 0.1);
   background: var(--bg-input);
   position: relative;
+  transition: all 0.2s ease;
 }
 
 /* corners styling for search box */
@@ -283,6 +284,7 @@ h1, h2, h3, h4, .retro-font {
 
 .search-input {
   flex: 1;
+  min-width: 0;
   background: transparent;
   border: none;
   color: var(--color-gray);
@@ -302,12 +304,48 @@ h1, h2, h3, h4, .retro-font {
   font-family: 'Press Start 2P', cursive;
   font-size: 0.8rem;
   padding: 0 25px;
+  min-height: 48px;
   cursor: pointer;
   transition: all 0.2s;
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
-.search-btn:hover {
+.search-btn:hover, .search-btn:active {
   background: #ffffff;
   box-shadow: 0 0 15px var(--color-cyan);
+}
+
+@media (max-width: 640px) {
+  .search-container {
+    margin-bottom: 2rem;
+  }
+  .search-input {
+    font-size: 1.3rem;
+    padding: 12px 14px;
+  }
+  .search-btn {
+    font-size: 0.65rem;
+    padding: 0 16px;
+  }
+}
+
+@media (max-width: 460px) {
+  .search-container {
+    flex-direction: column;
+  }
+  .search-btn {
+    width: 100%;
+    height: 44px;
+    padding: 10px;
+    border-top: 1px solid var(--border-color);
+  }
+  .search-input {
+    width: 100%;
+    padding: 12px;
+    font-size: 1.2rem;
+  }
 }
 
 /* Dashboard Container */
