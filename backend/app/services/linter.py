@@ -40,7 +40,7 @@ def run_ruff_linter(repo_path: Path) -> List[Dict]:
 
     issues: List[Dict] = []
     for item in data:
-        code = item.get("code", "")
+        code = item.get("code") or ""
         message = item.get("message", "")
         filename = item.get("filename", "")
         location = item.get("location", {})
@@ -52,10 +52,10 @@ def run_ruff_linter(repo_path: Path) -> List[Dict]:
             rel = filename
 
         # Classify severity and category based on rule prefix
-        if code.startswith("E9") or code in {"F821", "F822", "F823", "F701", "F702", "F704", "F706"}:
+        if not code or code.startswith("E9") or code in {"F821", "F822", "F823", "F701", "F702", "F704", "F706"}:
             severity = "CRITICAL"
-            category = "syntax" if code.startswith("E9") else "bug"
-            suggestion = f"Fix {code}: Fix the broken syntax or undefined variable before executing this code."
+            category = "syntax" if (not code or code.startswith("E9")) else "bug"
+            suggestion = f"Fix {code or 'syntax'}: Fix the broken syntax or undefined variable before executing this code."
         elif code.startswith("B") or code.startswith("F6"):
             severity = "HIGH"
             category = "bug"
