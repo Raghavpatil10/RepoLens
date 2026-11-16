@@ -118,7 +118,9 @@ const nodeTypes = {
 const WorkflowDiagram = ({ diagramData }) => {
   const [nodes, setNodes, onNodesChange] = useNodesState([]);
   const [edges, setEdges, onEdgesChange] = useEdgesState([]);
-  const [layoutDirection, setLayoutDirection] = useState('LR');
+  const [layoutDirection, setLayoutDirection] = useState(() => (
+    typeof window !== 'undefined' && window.innerWidth < 768 ? 'TB' : 'LR'
+  ));
 
   useEffect(() => {
     if (diagramData && diagramData.nodes && diagramData.edges) {
@@ -216,9 +218,10 @@ const WorkflowDiagram = ({ diagramData }) => {
         fitViewOptions={{ padding: 0.2 }}
         minZoom={0.1}
         maxZoom={2}
+        preventScrolling={false}
         attributionPosition="bottom-right"
       >
-        <Controls />
+        <Controls position="top-right" showInteractive={false} style={{ top: 46 }} />
         <Background color="#222" gap={20} size={1} />
       </ReactFlow>
     </div>
