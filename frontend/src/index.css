@@ -474,16 +474,17 @@ h1, h2, h3, h4, .retro-font {
 
 /* Warning Cards */
 .warning-cards {
-  display: flex;
-  gap: 20px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
 }
 .warning-card {
-  flex: 1;
   background: #111;
   border: 2px solid #222;
   padding: 15px;
   text-align: center;
   position: relative;
+  transition: transform 0.2s ease, border-color 0.2s ease;
 }
 .warning-icon {
   color: var(--color-gray);
@@ -513,6 +514,49 @@ h1, h2, h3, h4, .retro-font {
     #111 5px,
     #111 10px
   );
+}
+
+@media (max-width: 680px) {
+  .warning-cards {
+    gap: 10px;
+  }
+  .warning-card {
+    padding: 12px 10px;
+  }
+  .warning-text {
+    font-size: 0.5rem;
+    margin-bottom: 10px;
+  }
+  .warning-number {
+    font-size: 1.25rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .warning-cards {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+  .warning-card {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    gap: 12px;
+    text-align: left;
+    padding: 12px 14px 16px 14px;
+  }
+  .warning-icon {
+    margin-bottom: 0;
+    font-size: 1.4rem;
+  }
+  .warning-text {
+    margin-bottom: 0;
+    font-size: 0.55rem;
+  }
+  .warning-number {
+    font-size: 1.4rem;
+    text-align: right;
+  }
 }
 
 /* Trends Panel */
