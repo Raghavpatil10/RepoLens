@@ -128,12 +128,12 @@ function App() {
       <header className="top-bar">
         <div className="top-bar-left">
           <div className="logo-icon"></div>
-          <span className="brand-text">REPOLENS<br />ARCADE SECURITY SCANNER </span>
+          <span className="brand-text">REPOLENS<br /><span className="brand-subtext">ARCADE SECURITY SCANNER</span></span>
         </div>
         <div className="nav-buttons">
         </div>
         <div className="top-bar-right">
-          <span>USERNAME<br />999_</span>
+          <span className="user-label">USERNAME<br />999_</span>
           <div className="avatar"></div>
         </div>
       </header>
