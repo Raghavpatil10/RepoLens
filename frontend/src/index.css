@@ -842,8 +842,10 @@ h1, h2, h3, h4, .retro-font {
   border: 1px solid #333;
   border-radius: 2px;
   overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
   padding: 10px 0;
   margin-top: 10px;
+  width: 100%;
 }
 .code-line {
   display: flex;
@@ -866,6 +868,7 @@ h1, h2, h3, h4, .retro-font {
   user-select: none;
   border-right: 1px solid #333;
   margin-right: 15px;
+  flex-shrink: 0;
 }
 .code-line.highlight .code-line-number {
   color: var(--color-magenta);
@@ -874,6 +877,24 @@ h1, h2, h3, h4, .retro-font {
   color: #ddd;
   white-space: pre;
   padding-right: 15px;
+}
+
+@media (max-width: 640px) {
+  .code-snippet-container {
+    padding: 8px 0;
+  }
+  .code-line {
+    font-size: 0.85rem;
+  }
+  .code-line-number {
+    min-width: 34px;
+    padding: 0 8px;
+    margin-right: 8px;
+    font-size: 0.8rem;
+  }
+  .code-line-content {
+    padding-right: 10px;
+  }
 }
 
 /* DIAGRAM STYLES */
