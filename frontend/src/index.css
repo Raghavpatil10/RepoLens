@@ -995,6 +995,11 @@ h1, h2, h3, h4, .retro-font {
   letter-spacing: 0.5px;
   cursor: pointer;
   transition: all 0.2s ease;
+  min-height: 38px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  touch-action: manipulation;
 }
 .filter-tab:hover {
   border-color: var(--color-cyan);
@@ -1023,6 +1028,32 @@ h1, h2, h3, h4, .retro-font {
   color: #ffffff;
   border-color: var(--color-magenta);
   box-shadow: 0 0 10px rgba(255, 0, 234, 0.4);
+}
+
+@media (max-width: 640px) {
+  .filter-tabs-container {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scroll-snap-type: x mandatory;
+    padding-bottom: 8px;
+    margin-top: 16px;
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-cyan) transparent;
+  }
+  .filter-tabs-container::-webkit-scrollbar {
+    height: 4px;
+  }
+  .filter-tabs-container::-webkit-scrollbar-thumb {
+    background: var(--color-cyan);
+  }
+  .filter-tab {
+    flex-shrink: 0;
+    scroll-snap-align: start;
+    font-size: 0.55rem;
+    padding: 8px 12px;
+    white-space: nowrap;
+  }
 }
 
 /* Finding Cards & Category Badges */
