@@ -805,17 +805,35 @@ h1, h2, h3, h4, .retro-font {
   font-size: 1.1rem;
   color: var(--color-gray);
   display: flex;
-  gap: 10px;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
 }
 .finding-meta-item {
   background: #111;
-  padding: 2px 8px;
+  padding: 3px 8px;
   border: 1px solid #333;
+  max-width: 100%;
+  word-break: break-all;
+  overflow-wrap: anywhere;
+  display: inline-flex;
+  align-items: center;
 }
 .finding-desc {
   font-size: 1.1rem;
   color: var(--color-white);
   line-height: 1.4;
+  word-break: break-word;
+}
+
+@media (max-width: 640px) {
+  .finding-meta {
+    font-size: 0.95rem;
+    gap: 6px;
+  }
+  .finding-desc {
+    font-size: 1rem;
+  }
 }
 
 /* Code Snippet */
