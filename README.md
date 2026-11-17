@@ -164,7 +164,7 @@ Open `http://localhost:5173` in your browser
 2. Navigate to `http://localhost:5173`.
 3. Paste any public GitHub repository link (e.g. `https://github.com/psf/requests` or your own repository).
 4. Click **ANALYZE** (or press `Enter`).
-5. Review the **Code Issues**, **Security Vulnerabilities**, and **AI Summary**.
+5. Review **Code Issues**, **Security Vulnerabilities**, and **AI Summary**.
 
 ---
 
