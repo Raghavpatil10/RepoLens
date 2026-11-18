@@ -2,7 +2,7 @@
 
 > **Insert Repo Link to Scan Repository** 👾
 >
-> Paste any public GitHub repository URL, and get back an arcade-themed structured technical audit: detected code issues, security vulnerabilities, and an optional AI-generated plain-language summary.
+> Paste any public GitHub repository URL, and get back an arcade-themed structured technical audit: detected code issues, security vulnerabilities, and an optional AI-generated plain-language summary
 
 ---
 
