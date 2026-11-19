@@ -16,7 +16,7 @@ RepoLens combines deterministic static analysis with a retro 8-bit cyber-arcade 
 - 🛡️ **Security & Secret Scanner:** Detects exposed API keys (OpenAI, AWS, GitHub, Stripe, Slack, Private Keys) alongside Bandit security vulnerability scans.
 - ⚙️ **Multi-Language & Config Validator:** Validates JSON and YAML syntax for configuration and CI/CD pipelines, plus JavaScript/TypeScript runtime anti-patterns.
 - 🤖 **Executive Technical Summary:** Synthesizes structured findings into an actionable summary using Claude or intelligent local heuristics.
-- 🕸️ **Workflow Diagram:** Interactive visual representation of repository module architecture using React Flow.
+- 🕸️ **Workflow Diagram:** Interactive visual representation of repository module architecture which gives a better understanding of the system done using React Flow.
 
 ---
 
