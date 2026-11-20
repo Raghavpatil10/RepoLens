@@ -172,7 +172,7 @@ Open `http://localhost:5173` in your browser
 
 - **Deterministic Core:** Language breakdown, line counts, function/class counters, Radon cyclomatic complexity, Bandit security findings, and pip-audit vulnerability lookups are 100% deterministic. Real engineering tools do the heavy lifting.
 - **Graceful Degradation:** If `ANTHROPIC_API_KEY` is omitted, all security and code analysis scans run normally; only the AI prose summary is skipped.
-- **Safe Isolation:** Cloned repositories are written to temporary system directories and cleanly wiped after the audit finishes.
+- **Safe Isolation:** Cloned repositories are written to temporary system directories and cleanly wiped after the audit finishes
 
 ---
 
